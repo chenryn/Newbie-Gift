@@ -4,7 +4,9 @@ use warnings;
 use autodie;
 use 5.010;
 use base qw(Object);
+use Hashtable;
 use Array;
+use Geo::IP;
 
 sub new {
     my $pkg = shift;
@@ -21,14 +23,13 @@ process_log($logpath, sub {
 =cut
 
 sub process_log {
-    my $self = shift;
     my $logpath = shift;
-    my $cb = shift;
-    my $sep = shift || qr/\s+/;
+    my $cb      = shift;
+    my $sep     = shift || qr/\s+/;
     open my $fh, '<', $logpath;
-    while(<$fh>){
+    while (<$fh>) {
         chomp;
-        my $lines = Array->new( split($sep, $_) );
+        my $lines = Array->new( split( $sep, $_ ) );
         $cb->($lines);
     }
 }

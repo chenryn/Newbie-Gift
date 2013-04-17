@@ -33,13 +33,28 @@ sub save {
                 for my $row ( 1 .. $sheet->row_count ) {
                     my $cell = $sheet->get( $row, $col );
                     if ($cell) {
-                        if ( $cell->width > ($col_width[$col] or 0) ) {
+                        if ( $cell->width > ( $col_width[$col] or 0 ) ) {
                             $col_width[$col] = $cell->width;
                         }
                         my $value  = $cell->value;
                         my $format = $workbook->add_format();
-                        $workbook->set_custom_color( 40, '#' . uc( sprintf( "%.6x", $cell->{border_bottom}->{color} )));
-                        $workbook->set_custom_color( 41, '#' . uc( sprintf( "%.6x", $cell->{border_left}->{color})));
+                        $workbook->set_custom_color(
+                            40,
+                            '#'
+                              . uc(
+                                sprintf( "%.6x",
+                                    $cell->{border_bottom}->{color} )
+                              )
+                        );
+                        $workbook->set_custom_color(
+                            41,
+                            '#'
+                              . uc(
+                                sprintf(
+                                    "%.6x", $cell->{border_left}->{color}
+                                )
+                              )
+                        );
                         $format->set_bottom(
                             Excel::Cell->english_to_num(
                                 $cell->{border_bottom}->{width},

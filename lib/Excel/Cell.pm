@@ -43,9 +43,9 @@ sub border_left {
     my ( $self, $width, $style, $color ) = @_;
     if ( scalar(@_) > 1 ) {
         $self->{border_left} = {
-            width => $width ,
-            style => $style ,
-            color => $color ,
+            width => $width,
+            style => $style,
+            color => $color,
         };
         return $self;
     }
@@ -64,9 +64,9 @@ sub border_bottom {
     my ( $self, $width, $style, $color ) = @_;
     if ( scalar(@_) > 1 ) {
         $self->{border_bottom} = {
-            width => $width ,
-            style => $style ,
-            color => $color ,
+            width => $width,
+            style => $style,
+            color => $color,
         };
         return $self;
     }
@@ -129,31 +129,31 @@ sub english_to_num {
         when ('slantdash dot') {
             return 13;
         }
-        when('double'){
+        when ('double') {
             return 6;
         }
         default { return 0; }    #none
     }
 }
 
-sub num_to_english{
-    my ( $class, $index) = @_;
-    given($index){
-        when(0){return ('none', 0);}
-        when(1){return ('solid', 1);}
-        when(2){return ('solid', 2);}
-        when(3){return ('dash', 1);}
-        when(4){return ('dot', 1);}
-        when(5){return ('solid', 3);}
-        when(6){return ('double', 3);}
-        when(7){return ('solid', 0);}
-        when(8){return ('dash', 2);}
-        when(9){return ('dash dot', 1);}
-        when(10){return ('dash dot', 2);}
-        when(11){return ('dash dot dot', 1);}
-        when(12){return ('dash dot dot', 2);}
-        when(13){return ('slantdash dot', 2);}
-        default {return ('none', 0);}
+sub num_to_english {
+    my ( $class, $index ) = @_;
+    given ($index) {
+        when (0)  { return ( 'none',          0 ); }
+        when (1)  { return ( 'solid',         1 ); }
+        when (2)  { return ( 'solid',         2 ); }
+        when (3)  { return ( 'dash',          1 ); }
+        when (4)  { return ( 'dot',           1 ); }
+        when (5)  { return ( 'solid',         3 ); }
+        when (6)  { return ( 'double',        3 ); }
+        when (7)  { return ( 'solid',         0 ); }
+        when (8)  { return ( 'dash',          2 ); }
+        when (9)  { return ( 'dash dot',      1 ); }
+        when (10) { return ( 'dash dot',      2 ); }
+        when (11) { return ( 'dash dot dot',  1 ); }
+        when (12) { return ( 'dash dot dot',  2 ); }
+        when (13) { return ( 'slantdash dot', 2 ); }
+        default   { return ( 'none',          0 ); }
     }
-}    
+}
 1;

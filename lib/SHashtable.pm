@@ -12,14 +12,17 @@ sub new {
 
 sub each {
     my ( $self, $sub ) = @_;
-    $self->keys->sort(sub{
-            my ($a, $b) = @_;
-            return $a cmp $b
-        })->each(sub {
+    $self->keys->sort(
+        sub {
+            my ( $a, $b ) = @_;
+            return $a cmp $b;
+        }
+      )->each(
+        sub {
             my ($key) = @_;
             $sub->( $key, $self->get($key) );
         }
-    );
+      );
     return $self;
 }
 

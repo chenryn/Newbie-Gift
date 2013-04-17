@@ -2,9 +2,10 @@ package HTTP::Client;
 use strict;
 use warnings;
 use base qw(Object);
+use SHashtable;
+use HTTP::DOM;
 use AnyEvent::HTTP;
 use AnyEvent;
-use SHashtable;
 
 sub new {
     my $pkg = shift;
@@ -14,14 +15,14 @@ sub new {
 =head1 web_get
     my $url = 'http://www.baidu.com/';
     my $content = web_get($url);
-    say "Scalar: " . $content;
+    say "Scalar: " . $content->xml;
 
     my @urls = qw(http://www.baidu.com http://www.sina.com.cn);
     web_get(@urls, sub {
     #web_get($url, sub {
         my ($content, $code, $res_headers) = @_;   # $res_headers 是 SHashtable 类型
         say "HTTP: " . $code;
-        say "Body: " . $content;
+        say "Body: " . $content->text;
         $res_headers->each(
             sub {
                 my ($header_k, $header_v) = @_;
@@ -30,10 +31,10 @@ sub new {
         );
     });
 =cut
+
 sub web_get {
-    my $self = shift;
     my $cb;
-    if (ref($_[-1]) eq 'CODE') {
+    if ( ref( $_[-1] ) eq 'CODE' ) {
         $cb = pop @_;
     }
     my @urls = @_;
@@ -42,16 +43,14 @@ sub web_get {
     for my $url (@urls) {
         $w->begin;
         http_get $url, sub {
-            my ($data, $headers) = @_;
-            my $code = delete $headers->{Status};
+            my ( $data, $headers ) = @_;
+            my $code        = delete $headers->{Status};
             my $res_headers = SHashtable->new(%$headers);
+            $content        = HTTP::DOM->new($data);
             $w->end;
             if ( defined $cb ) {
-                $cb->($data, $code, $res_headers);
-            }
-            else {
-                $content = $data;
-            }
+                $cb->( $content, $code, $res_headers );
+            };
         };
     }
     $w->recv;

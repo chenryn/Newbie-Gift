@@ -7,13 +7,39 @@ use Hashtable;
 use Time;
 use File::Find;
 use File::Copy::Recursive;
+use YAML::XS ();
+use JSON::XS ();
 
 sub new {
     my $pkg = shift;
     return bless {}, $pkg;
 }
 
-=head1 read_file
+=head2 from_json/yaml
+return Hashtable or Array
+    my $object = from_yaml/json($file);
+=cut
+
+sub from_yaml {
+    my ( $filepath ) = @_;
+    my $ref = YAML::XS::LoadFile($filepath);
+    return
+      ref($ref) eq 'HASH'
+      ? NewBie::Gift::Hashtable->new($ref)
+      : NewBie::Gift::Array->new($ref);
+}
+
+sub from_json {
+    my ( $filepath ) = @_;
+    my $data = read_file($filepath);
+    my $ref  = JSON::XS::decode_json($data);
+    return
+      ref($ref) eq 'HASH'
+      ? NewBie::Gift::Hashtable->new($ref)
+      : NewBie::Gift::Array->new($ref);
+}
+
+=head2 read_file
     my $filepath = '/home/chenryn/test.conf';
     my $content = read_file($filepath);
     say $content;
@@ -23,23 +49,24 @@ sub new {
         say $content->get(1);
     });
 =cut
+
 sub read_file {
-    my ( $self, $filepath, $cb ) = @_;
+    my ( $filepath, $cb ) = @_;
     open my $fh, '<', $filepath;
     my $content = new Array;
-    while(<$fh>){
-    	chomp;
-    	$content->push($_);
+    while (<$fh>) {
+        chomp;
+        $content->push($_);
     }
     if ( defined $cb ) {
         $cb->($content);
     }
     else {
-        return join("\n", @$content);
+        return join( "\n", @$content );
     }
 }
 
-=head1 read_dir
+=head2 read_dir
     read_dir('/root')->each(sub { 
         my $file = shift;
         read_file( $file, sub {
@@ -51,14 +78,17 @@ sub read_file {
         ...
     });
 =cut
+
 sub read_dir {
-    my $self = shift;
-    if (ref($_[-1]) eq 'CODE' ) {
-        my $cb = pop @_;
+    if ( ref( $_[-1] ) eq 'CODE' ) {
+        my $cb      = pop @_;
         my @dirpath = @_;
-        File::Find::find(sub {
-            $cb->($File::Find::dir, $_);
-        }, @dirpath)
+        File::Find::find(
+            sub {
+                $cb->( $File::Find::dir, $_ );
+            },
+            @dirpath
+        );
     }
     else {
         my $dirpath = shift;
@@ -66,13 +96,13 @@ sub read_dir {
     }
 }
 
-sub mkdir_p { shift; File::Copy::Recursive::pathmk(@_) }
+sub mkdir_p { File::Copy::Recursive::pathmk(@_) }
 
-sub rm_r { shift; File::Copy::Recursive::pathrm(@_) }
+sub rm_r { File::Copy::Recursive::pathrm(@_) }
 
-sub cp_r { shift; File::Copy::Recursive::rcopy(@_) }
+sub cp_r { File::Copy::Recursive::rcopy(@_) }
 
-=head1
+=head2
      0 dev      device number of filesystem
      1 ino      inode number
      2 mode     file mode  (type and permissions)
@@ -87,23 +117,24 @@ sub cp_r { shift; File::Copy::Recursive::rcopy(@_) }
     11 blksize  preferred block size for file system I/O
     12 blocks   actual number of blocks allocated
 =cut
+
 sub fstat {
-    my ($self, $file) = @_;
-    my $ret = Array->new(stat($file));
+    my ( $file ) = @_;
+    my $ret = Array->new( stat($file) );
     return Hashtable->new(
-        dev => $ret->get(0),
-        inode => $ret->get(1),
-        mode => sprintf("%04o", $ret->get(2) & 07777),
-        nlink => $ret->get(3),
-        uid => $ret->get(4),
-        gid => $ret->get(5),
-        rdev => $ret->get(6),
-        size => $ret->get(7),
-        atime => Time->new->from_epoch($ret->get(8)),
-        mtime => Time->new->from_epoch($ret->get(9)),
-        ctime => Time->new->from_epoch($ret->get(10)),
+        dev     => $ret->get(0),
+        inode   => $ret->get(1),
+        mode    => sprintf( "%04o", $ret->get(2) & 07777 ),
+        nlink   => $ret->get(3),
+        uid     => $ret->get(4),
+        gid     => $ret->get(5),
+        rdev    => $ret->get(6),
+        size    => $ret->get(7),
+        atime   => Time->new->from_epoch( $ret->get(8) ),
+        mtime   => Time->new->from_epoch( $ret->get(9) ),
+        ctime   => Time->new->from_epoch( $ret->get(10) ),
         blksize => $ret->get(11),
-        blocks => $ret->get(12),
+        blocks  => $ret->get(12),
     );
 }
 

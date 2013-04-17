@@ -37,17 +37,17 @@ sub get {
     if ( $col =~ /^[A-Za-z]+$/ ) {
         $col = _letter_to_num($col);
     }
-    return $self->{cells}->[$row-1][$col-1];
+    return $self->{cells}->[ $row - 1 ][ $col - 1 ];
 }
 
 sub _letter_to_num {
     my $str     = shift;
-    my $letters = Array->new(split //, uc($str));
+    my $letters = Array->new( split //, uc($str) );
     my $res     = 0;
     for ( my $i = ( $letters->size ) - 1 ; $i >= 0 ; $i-- ) {
         $res +=
           ( ( ord( $letters->[$i] ) - ord('A') + 1 ) *
-              ( 26**($letters->size - $i - 1 ) ) );
+              ( 26**( $letters->size - $i - 1 ) ) );
     }
     return $res;
 }

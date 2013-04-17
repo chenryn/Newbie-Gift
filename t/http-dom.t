@@ -10,6 +10,5 @@ my $html = '<html><meta content="haha"><head></head><body><div id="mid">testcont
 $hd = new HTTP::DOM->new($html);
 isa_ok $hd, HTTP::DOM;
 
-is $hd->find('#mid')->text->get(0), 'testcontent';
-
-cmp_deeply $hd->find('meta')->attr('content'), Array->new( 'haha' );
+is $hd->find('#mid')->text, 'testcontent';
+is $hd->find('meta')->attr('content'), 'haha';

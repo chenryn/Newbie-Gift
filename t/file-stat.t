@@ -8,7 +8,7 @@ $f = new File;
 
 isa_ok $f, File;
 
-my $stat = $f->fstat( '/tmp' );
+my $stat = File::fstat( '/tmp' );
 isa_ok $stat, Hashtable;
 
 is $stat->{mode}, '1777';
