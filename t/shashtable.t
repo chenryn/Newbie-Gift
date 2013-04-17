@@ -1,11 +1,11 @@
 use Test::More 'no_plan';
 use Test::Deep;
 use lib '../lib';
+use NG;
 
-use SHashtable;
-$hash = new SHashtable;
+my $hash = new SHashtable;
 
-isa_ok $hash, SHashtable;
+isa_ok $hash, 'SHashtable';
 
 $hash->put( 'key1', 1 );
 $hash->put( 'key2', 2 );
@@ -13,7 +13,7 @@ $hash->put( 'key3', 3 );
 
 is $hash->get('key1'), 1;
 
-$array = new Array;
+my $array = new Array;
 $hash->each(
     sub {
         my ( $key, $val ) = @_;

@@ -4,7 +4,7 @@ use warnings;
 
 our $VERSION = '0.001';
 use File::Basename qw(dirname);
-push @INC, dirname(__FILE__);
+use lib dirname(__FILE__) . '/NG';
 use HTTP::Client;
 use EMail;
 use Object;

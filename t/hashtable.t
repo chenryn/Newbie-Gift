@@ -1,11 +1,11 @@
 use Test::More 'no_plan';
 use Test::Deep;
 use lib '../lib';
+use NG;
 
-use Hashtable;
-$hash = new Hashtable;
+my $hash = new Hashtable;
 
-isa_ok $hash, Hashtable;
+isa_ok $hash, 'Hashtable';
 
 $hash->put( 'key1', 1 );
 $hash->put( 'key2', 2 );

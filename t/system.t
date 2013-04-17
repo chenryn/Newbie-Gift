@@ -1,9 +1,10 @@
 use Test::More 'no_plan';
 use Test::Deep;
 use lib '../lib';
+use NG;
 
-use System;
-$s = new System;
+my $s = new System;
+isa $s, 'System';
 
 System::local_run( 'w', sub {
     my ($out, $err) = @_;

@@ -1,6 +1,6 @@
 use Test::More;
 use lib '../lib';
-use Array;
+use NG;
 
 my $ar = Array->new(10, 3, 9, 7);
 
@@ -45,7 +45,7 @@ ok($v == 27, "shift 1");
 ok($ar->[0] == 10, "shift 2");
 
 $v = $ar->join(':');
-ok($v == '10:3:9:7', "join :");
+ok($v eq '10:3:9:7', "join :");
 
 done_testing;
 

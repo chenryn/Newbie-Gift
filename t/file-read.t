@@ -1,13 +1,11 @@
 use Test::More 'no_plan';
 use Test::Deep;
 use lib '../lib';
-use Array;
-use File;
-use Data::Dumper;
+use NG;
 
-$f = new File;
+my $f = new File;
 
-isa_ok $f, File;
+isa_ok $f, 'File';
 
 my $log = './log.txt';
 my $got = File::read_file($log);
@@ -19,7 +17,7 @@ File::read_file($log, sub {
 });
 
 my $list = File::read_dir('/');
-isa_ok $list, Array;
+isa_ok $list, 'Array';
 
 File::read_dir('.', sub {
     my ($dir, $file) = @_;
