@@ -13,4 +13,4 @@ is $stat->{mode}, '1777';
 is $stat->{uid}, 0;
 
 isa_ok $stat->{atime}, 'Time';
-is $stat->{atime}->day, Time->new->now->day;
+is $stat->{atime}->year, Time->new->now->year;
