@@ -1,6 +1,5 @@
 use Test::More;
 use Test::Deep;
-use Data::Dumper;
 use lib '../lib';
 use NG;
 

@@ -49,7 +49,7 @@ sub get {
     return unless $pop->login( $user, $pass ) > 0;
 
     my $msgnums = $pop->list;
-    for my $msgnum ( keys %$msgnums ) {
+    for my $msgnum ( sort { $b <=> $a } keys %$msgnums ) {
         my $parsed = Email::MIME->new( join( '', @{ $pop->get($msgnum) } ) );
 
         my $headers = Hashtable->new( @{ $parsed->{header}->{headers} } );
@@ -60,7 +60,12 @@ sub get {
         );
 
         my $body = new Array;
-        $body->push( HTTP::DOM->new($_->body_str) ) for $parsed->parts;
+        my @parts = $parsed->parts;
+        my $html = +( shift @parts )->body_str;
+        $html = '<html><head></head><body><div>' . $html . '</div></body></html>'
+          if $html !~ /^\s*\<htm/;
+        $body->push( HTTP::DOM->new($html) );
+        $body->push( $_->body_raw ) for @parts;
 
         $cb->( $headers, $body, $msgnum, $pop );
     }

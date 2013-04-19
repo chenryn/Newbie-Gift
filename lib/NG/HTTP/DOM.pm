@@ -63,7 +63,7 @@ sub last {
 
 =head2 find
     my $dom = HTTP::DOM->new($content);
-    print $dom->find('#m')->text->get(0);
+    print $dom->find('#m')->text;
 =cut
 sub find {
     my ( $self, $selector ) = @_;
@@ -86,6 +86,25 @@ sub find {
     );
 
     return ( ref $self || $self )->new_from_element( $new, $self );
+}
+
+=head2 each
+    $dom->find('#m')->each(sub {
+        my $i = shift;
+        printf "(%d) %s\n", $i+1, $_->text;
+    })
+=cut
+sub each {
+    my ($self, $code) = @_;
+    my $i = 0;
+    $self->{trees}->each(
+        sub {
+            my $tree = shift;
+            local $_ = (ref $self || $self)->new_from_element(Array->new($tree), $self);
+            $code->($i++, $_);
+        }
+    );
+    return $self;
 }
 
 =head2 html
@@ -114,7 +133,7 @@ sub xml {
 
 =head2 text
     my $dom = HTTP::DOM->new($content);
-    print $dom->text->get(0);
+    print $dom->text;
 =cut
 sub text {
     my $self = shift;
@@ -132,7 +151,7 @@ sub text {
     my $hc = HTTP::Client->new;
     my $content = $hc->web_get($url);
     my $dom = HTTP::DOM->new($content);
-    print $dom->find('meta')->attr('content')->get(0);
+    print $dom->find('meta')->attr('content');
 =cut
 sub attr {
     my $self      = shift;

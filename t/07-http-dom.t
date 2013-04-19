@@ -10,3 +10,6 @@ isa_ok $hd, 'HTTP::DOM';
 
 is $hd->find('#mid')->text, 'testcontent';
 is $hd->find('meta')->attr('content'), 'haha';
+$hd->find('body')->each(sub {
+	isa_ok $_[1], 'HTTP::DOM';
+});
