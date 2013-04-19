@@ -1,4 +1,5 @@
 use Test::More;
+use Test::Deep;
 use lib '../lib';
 use NG;
 
@@ -47,6 +48,16 @@ ok($ar->[0] == 10, "shift 2");
 $v = $ar->join(':');
 ok($v eq '10:3:9:7', "join :");
 
+my $h = $ar->zip(Array->new(qw/a b c d/))->to_hash;
+cmp_deeply $h, Hashtable->new(qw/10 a 3 b 9 c 7 d/), "zip Arrays to hash";
+
+$ar->push(7);
+cmp_deeply $ar->uniq, Array->new(10, 3, 9, 7), "uniq";
+
+cmp_deeply $ar->grep(sub {
+	$_ > 5
+	}), Array->new(10, 9, 7, 7), "grep";
+
+ok($ar->min == 3, "min");
+
 done_testing;
-
-

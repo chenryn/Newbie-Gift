@@ -4,6 +4,7 @@ use strict;
 use base 'Object';
 use Hashtable;
 use Array;
+use HTTP::DOM;
 use Net::SMTP;
 use Net::POP3;
 use Email::MIME;
@@ -12,7 +13,6 @@ use Encode;
 =head2 send
     send 'smtp.host.com', \%headers, $body;
 =cut
-
 sub send {
     my ( $host, $headers, $body ) = @_;
     my $smtp = Net::SMTP->new($host);
@@ -38,11 +38,10 @@ sub send {
     get 'pop3.host.com', $user, $password, sub {
         my ( $headers, $body, $num, $pop ) = @_;
             say $headers->get('Subject');
-            say $body->get(0);
+            say $body->get(0)->text;
             $pop->delete($num);
     };
 =cut
-
 sub get {
     my $cb = pop;
     my ( $host, $user, $pass ) = @_;
@@ -61,7 +60,7 @@ sub get {
         );
 
         my $body = new Array;
-        $body->push( $_->body ) for $parsed->parts;
+        $body->push( HTTP::DOM->new($_->body_str) ) for $parsed->parts;
 
         $cb->( $headers, $body, $msgnum, $pop );
     }
