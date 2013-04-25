@@ -49,4 +49,16 @@ sub each {
     return $self;
 }
 
+sub flip {
+    my ($self) = @_;
+    my $tmp = Hashtable->new;
+    $self->keys->each(
+        sub {
+            my ($key) = @_;
+            $tmp->put( $self->get($key), $key );
+        }
+    );
+    return $tmp;
+}
+
 1;

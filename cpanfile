@@ -1,6 +1,7 @@
 requires 'autodie';
+requires 'Try::Tiny';
 requires 'AnyEvent::HTTP';
-requires 'AnyEvent::DBI';
+requires 'DBI';
 requires 'File::Copy::Recursive';
 requires 'Spreadsheet::ParseExcel';
 requires 'Spreadsheet::WriteExcel';
@@ -9,6 +10,7 @@ requires 'HTML::TreeBuilder::XPath';
 requires 'HTML::Selector::XPath';
 requires 'Time::HiRes';
 requires 'SQL::Abstract';
+requires 'Child';
 
 on 'test' => sub {
     requires 'Test::More';

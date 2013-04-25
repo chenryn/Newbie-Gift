@@ -1,14 +1,12 @@
 package NG;
 use strict;
 use warnings;
+use Try::Tiny;
 
 our $VERSION = '0.001';
 use File::Basename qw(dirname);
 use lib dirname(__FILE__) . '/NG';
-use Object;
 use Array;
-use Hashtable;
-use SHashtable;
 use DB;
 use Excel;
 use Excel::Cell;
@@ -114,6 +112,7 @@ sub import {
     warnings->import;
     utf8->import;
     feature->import(':5.10');
+    Try::Tiny->import;
     $class->export_to_level(1, $class, @EXPORT);
 }
 

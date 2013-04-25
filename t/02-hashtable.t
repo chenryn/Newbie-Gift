@@ -33,3 +33,5 @@ $hash->each(
 );
 
 cmp_deeply $hash->values, Array->new( 3, 4 );
+
+cmp_deeply $hash->flip, Hashtable->new(3 => 'key2', 4 => 'key3');
