@@ -23,6 +23,7 @@ use base 'Exporter';
 our @EXPORT = qw(
   local_run
   remote_run
+  fork_run
   taskset
 
   web_get
@@ -49,6 +50,7 @@ our @EXPORT = qw(
 
 sub local_run   { System::local_run(@_) }
 sub remote_run  { System::remote_run(@_) }
+sub for_run     { System::fork_run(@_) }
 sub taskset     { System::taskset(@_) }
 sub web_get     { HTTP::Client::web_get(@_) }
 sub mail_send   { EMail::send(@_) }
