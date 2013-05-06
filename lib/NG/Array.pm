@@ -1,9 +1,9 @@
-package Array;
+package NG::Array;
 
 use strict;
 use warnings;
-use base qw(Object);
-use Hashtable;
+use base qw(NG::Object);
+use NG::Hashtable;
 use List::Util;
 
 sub new {
@@ -51,7 +51,7 @@ sub sort {
     else {
         @tmp = sort @$self;
     }
-    return Array->new(@tmp);
+    return NG::Array->new(@tmp);
 }
 
 sub size {
@@ -71,13 +71,13 @@ sub join {
 
 sub to_hash {
     my ($self) = @_;
-    return Hashtable->new(@$self);
+    return NG::Hashtable->new(@$self);
 }
 
 sub zip {
     my ( $self, @arrs ) = @_;
-    my $tmp  = Array->new;
-    my $size = Array->new;
+    my $tmp  = NG::Array->new;
+    my $size = NG::Array->new;
     $size->push($_->size) for @_;
     for my $i ( 0 .. $size->max - 1 ) {
         $tmp->push($_->get($i) || '') for @_;
@@ -100,12 +100,12 @@ sub reduce {
 
 sub grep {
     my ( $self, $sub ) = @_;
-    return Array->new( grep { $sub->($_) } @$self );
+    return NG::Array->new( grep { $sub->($_) } @$self );
 }
 
 sub map {
     my ( $self, $sub ) = @_;
-    return Array->new( map { $sub->($_) } @$self );
+    return NG::Array->new( map { $sub->($_) } @$self );
 }
 
 sub max {

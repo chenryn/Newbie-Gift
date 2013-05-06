@@ -1,10 +1,10 @@
-package EMail;
+package NG::EMail;
 use warnings;
 use strict;
-use base 'Object';
-use Hashtable;
-use Array;
-use HTTP::DOM;
+use base 'NG::Object';
+use NG::Hashtable;
+use NG::Array;
+use NG::HTTP::DOM;
 use Net::SMTP;
 use Net::POP3;
 use Email::MIME;
@@ -52,19 +52,19 @@ sub get {
     for my $msgnum ( sort { $b <=> $a } keys %$msgnums ) {
         my $parsed = Email::MIME->new( join( '', @{ $pop->get($msgnum) } ) );
 
-        my $headers = Hashtable->new( @{ $parsed->{header}->{headers} } );
+        my $headers = NG::Hashtable->new( @{ $parsed->{header}->{headers} } );
         $headers->each(
             sub {
                 $headers->put( $_[0], Encode::decode( 'MIME-Header', $_[1] ) );
             }
         );
 
-        my $body = new Array;
+        my $body = new NG::Array;
         my @parts = $parsed->parts;
         my $html = +( shift @parts )->body_str;
         $html = '<html><head></head><body><div>' . $html . '</div></body></html>'
           if $html !~ /^\s*\<htm/;
-        $body->push( HTTP::DOM->new($html) );
+        $body->push( NG::HTTP::DOM->new($html) );
         $body->push( $_->body_raw ) for @parts;
 
         $cb->( $headers, $body, $msgnum, $pop );

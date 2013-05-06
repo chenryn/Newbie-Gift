@@ -1,9 +1,9 @@
-package System;
+package NG::System;
 use warnings;
 use strict;
 use autodie;
-use base 'Object';
-use Array;
+use base 'NG::Object';
+use NG::Array;
 use IPC::Open3;
 use Symbol;
 use Sys::CpuAffinity;
@@ -35,8 +35,8 @@ sub local_run {
 
     my $ret = open3( $inh, $outh, $errh, @commands );
 
-    my $stdout = Array->new;
-    my $stderr = Array->new;
+    my $stdout = NG::Array->new;
+    my $stderr = NG::Array->new;
     while (<$outh>) {
         chomp;
         $stdout->push($_);

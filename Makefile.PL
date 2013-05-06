@@ -19,6 +19,7 @@ WriteMakefile(
     },
     PREREQ_PM => {
         'autodie' => 0,
+        'autobox' => 0,
         'Try::Tiny' => 0,
         'AnyEvent::HTTP' => 0,
         'File::Copy::Recursive' => 0,

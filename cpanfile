@@ -1,4 +1,5 @@
 requires 'autodie';
+requires 'autobox';
 requires 'Try::Tiny';
 requires 'AnyEvent::HTTP';
 requires 'DBI';

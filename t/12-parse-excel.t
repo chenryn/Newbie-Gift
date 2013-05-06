@@ -7,12 +7,12 @@ parse_excel(
     't/test.xls',
     sub {
         my ($excel) = @_;
-        isa_ok $excel, 'Excel';
+        isa_ok $excel, 'NG::Excel';
         my $i = 1;
         $excel->sheets->each(
             sub {
                 my ($sheet) = @_;
-                isa_ok $sheet, 'Excel::Sheet';
+                isa_ok $sheet, 'NG::Excel::Sheet';
                 $sheet->name('new sheet name'.$i++);
             }
         );
