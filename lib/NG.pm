@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Try::Tiny;
 
-our $VERSION = '0.001';
+our $VERSION = '0.001_02';
 use Spreadsheet::ParseExcel;
 use NG::Autobox;
 use NG::Array;
@@ -17,8 +17,6 @@ use NG::File;
 use NG::Log;
 use NG::System;
 use NG::Time;
-
-use parent 'NG::Autobox';
 
 use base 'Exporter';
 our @EXPORT = qw(
@@ -47,6 +45,8 @@ our @EXPORT = qw(
   db
 
   parse_excel
+
+  def_class
 );
 
 sub local_run   { NG::System::local_run(@_) }
@@ -66,6 +66,7 @@ sub read_dir    { NG::File::read_dir(@_) }
 sub file_stat   { NG::File::fstat(@_) }
 sub process_log { NG::Log::process_log(@_) }
 sub geo_ip      { NG::Log::geo_ip(@_) }
+sub def_class   { NG::Class::def(@_) }
 sub db          { NG::DB->new(@_) }
 
 sub parse_excel {
