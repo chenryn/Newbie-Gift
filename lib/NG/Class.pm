@@ -1,6 +1,7 @@
 package NG::Class;
 use strict;
 use warnings;
+use Data::Dumper;
 
 =head2 def
     def_class Animal => ['sex', 'leg_color'] => {
@@ -24,7 +25,7 @@ sub def {
     
 
     eval "package $class";
-    eval "use $class";
+    eval "use $parent";
     if( $parent ne 'undef' ) {
         *t = eval('*'.$class.'::ISA');
         *t = [$parent];
@@ -60,17 +61,10 @@ sub def {
 
     *t = eval('*'.$class.'::new');
     *t = sub {
-        my $o = bless {map {($_, undef)} @$attrs}, $class;
-        my $args;
         my ($class, @args) = @_;
-        if(scalar(@args)==1){
-            $args = $args[0];
-        }
-        else{
-            $args = \@args;
-        }
+        my $o = bless {@args}, ref $class || $class;
         if(defined $methods->{build}){
-            $o->build($args);
+            $o->build(@args);
         }
         $o;
     }
