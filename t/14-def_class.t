@@ -1,4 +1,5 @@
 use Test::More;
+use Test::Deep;
 use lib '../lib';
 use warnings;
 use strict;
@@ -33,5 +34,6 @@ isa_ok $x, 'Dog';
 $x->eat('bone');
 is $x->run, 'bone', 'eat ok';
 is $x->sound, 1, 'parent sound ok';
+cmp_deeply $x->meta->{methods}, [qw/run sound eat/], 'list all methods ok';
 
 done_testing;

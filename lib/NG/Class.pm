@@ -40,6 +40,20 @@ sub def {
         };
     }
 
+    *t = eval('*'.$class.'::meta');
+    *t = sub {
+        my (@attr_list, @method_list, %seen);
+        if( $parent ne 'undef' ) {
+            push @attr_list,   @{ $parent->meta->{attrs} } if $parent->meta->{attrs};
+            push @method_list, @{ $parent->meta->{methods} } if $parent->meta->{methods};
+        }
+        push @attr_list, @{$attrs};
+        push @method_list, keys %{$methods};
+        return { attrs   => [ grep { not $seen{$_}++ } @attr_list ],
+                 methods => [ grep { not $seen{$_}++ } @method_list ],
+        };
+    };
+
     *t = eval('*'.$class.'::new');
     *t = sub {
         my $o = bless {map {($_, undef)} @$attrs}, $class;
