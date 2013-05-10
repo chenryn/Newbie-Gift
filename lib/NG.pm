@@ -17,6 +17,7 @@ use NG::File;
 use NG::Log;
 use NG::System;
 use NG::Time;
+use NG::Class;
 
 use base 'Exporter';
 our @EXPORT = qw(

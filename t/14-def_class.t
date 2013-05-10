@@ -3,9 +3,9 @@ use Test::Deep;
 use lib '../lib';
 use warnings;
 use strict;
-use NG::Class;
+use NG;
  
-NG::Class::def Animal => undef => ['sex', 'leg_color'] => {
+def_class Animal => ['sex', 'leg_color'] => {
     sound => sub {
          return 1;
     },
@@ -14,7 +14,7 @@ NG::Class::def Animal => undef => ['sex', 'leg_color'] => {
     },
 };
 
-NG::Class::def Dog => Animal => ['head_color'] => {
+def_class Dog => Animal => ['head_color'] => {
     eat => sub {
         my $self = shift;
         $self->head_color = shift;
@@ -34,6 +34,6 @@ isa_ok $x, 'Dog';
 $x->eat('bone');
 is $x->run, 'bone', 'eat ok';
 is $x->sound, 1, 'parent sound ok';
-cmp_deeply $x->meta->{methods}, [qw/run sound eat/], 'list all methods ok';
+cmp_deeply $x->meta->{methods}, [qw/dump run sound eat/], 'list all methods ok';
 
 done_testing;

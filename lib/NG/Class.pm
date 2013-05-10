@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 =head2 def
-    def_class Animal => undef => ['sex', 'leg_color'] => {
+    def_class Animal => ['sex', 'leg_color'] => {
         sound => sub {  .... },
         run => sub { .... },
     };
@@ -17,7 +17,11 @@ use warnings;
     $x->eat('bone');
 =cut
 sub def {
-    my ($class, $parent, $attrs, $methods) = @_;
+    my $class   = shift;
+    my $methods = pop;
+    my $attrs   = pop;
+    my $parent  = shift || 'NG::Object';
+    
 
     eval "package $class";
     eval "use $class";
