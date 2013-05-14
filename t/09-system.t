@@ -8,7 +8,10 @@ isa_ok $s, 'NG::System';
 
 NG::System::local_run( 'w', sub {
     my ($out, $err) = @_;
-    is $out->get(1), 'USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT';
+    is substr($out->get(1), 0, 4), 'USER';
+});
+NG::System::remote_run( '127.0.0.1', 'w', sub {
+    my ($out, $err) = @_;
 });
 
 for my $i (qw /a b c/ ) {
